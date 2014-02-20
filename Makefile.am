@@ -67,7 +67,7 @@ release_build_arch: DIST_SHA
 	git clone --branch master $(ORIGIN_URL) release-arch
 	cd release-arch &&\
 		$(edit_package) arch/PKGBUILD.in > arch/PKGBUILD &&\
-		git commit -m "Arch package for version $(PACKAGE_VERSION)" -- arch/PKGBUILD
+		git commit -m "Release version $(PACKAGE_VERSION) for Arch" -- arch/PKGBUILD
 
 release_push_arch:
 	cd release-arch &&\
@@ -82,7 +82,7 @@ release_build_deb: NEWS.md DIST_SHA distcheck
 	cp -f NEWS.md debian/changelog && \
 		mkdir -p deb-build && \
 		cp $(DIST_ARCHIVES) deb-build/$(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
-		tar -C deb-build $(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
+		tar -C deb-build -xf deb-build/$(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
 		cd deb-build/$(PACKAGE)-$(PACKAGE_VERSION) && \
 		debuild -us -uc && \
 		cd $(abs_srcdir) && \
@@ -97,6 +97,7 @@ release_push_deb:
 
 release_clean_deb:
 	rm -rf gh-pages
+	rm -rf deb-build
 	rm -rf $(DIST_ARCHIVES)
 
 ###### Tag
@@ -116,13 +117,12 @@ release_build_gh-pages:
 	  mandoc -Thtml -Oman=%N.%S.html man/$$i > gh-pages/$$i.html ; \
 	done && \
 	cp gh-pages/rcm.7.html gh-pages/index.html && \
-	git commit -am "Update HTML documentation for $(PACKAGE_VERSION)"
+	git commit -am "HTML documentation for $(PACKAGE_VERSION)"
 
 release_push_gh-pages:
 	cd gh-pages && \
 		git push -f $(ORIGIN_URL) gh-pages
 
-# TODO:
 release_clean_gh-pages:
 	rm -rf gh-pages
 

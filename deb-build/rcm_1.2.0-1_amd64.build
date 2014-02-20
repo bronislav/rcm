@@ -1,0 +1,67 @@
+ dpkg-buildpackage -rfakeroot -D -us -uc
+dpkg-buildpackage: source package rcm
+dpkg-buildpackage: source version 1.2.0-1
+dpkg-buildpackage: source distribution unstable
+dpkg-buildpackage: source changed by Mike Burns <mburns@thoughtbot.com>
+ dpkg-source --before-build rcm-1.2.0
+dpkg-buildpackage: host architecture amd64
+ fakeroot debian/rules clean
+dh clean 
+   dh_testdir
+   dh_auto_clean
+	make -j1 distclean
+make[1]: Entering directory `/home/mike/rcm/deb-build/rcm-1.2.0'
+Making distclean in man
+make[2]: Entering directory `/home/mike/rcm/deb-build/rcm-1.2.0/man'
+test -z "" || rm -f 
+test . = "." || test -z "" || rm -f 
+rm -f Makefile
+make[2]: Leaving directory `/home/mike/rcm/deb-build/rcm-1.2.0/man'
+Making distclean in share
+make[2]: Entering directory `/home/mike/rcm/deb-build/rcm-1.2.0/share'
+test -z "rcm.sh" || rm -f rcm.sh
+test . = "." || test -z "" || rm -f 
+rm -f Makefile
+make[2]: Leaving directory `/home/mike/rcm/deb-build/rcm-1.2.0/share'
+Making distclean in bin
+make[2]: Entering directory `/home/mike/rcm/deb-build/rcm-1.2.0/bin'
+test -z "" || rm -f 
+test . = "." || test -z "" || rm -f 
+rm -f Makefile
+make[2]: Leaving directory `/home/mike/rcm/deb-build/rcm-1.2.0/bin'
+make[2]: Entering directory `/home/mike/rcm/deb-build/rcm-1.2.0'
+test -z "NEWS.md" || rm -f NEWS.md
+test . = "." || test -z "" || rm -f 
+rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
+rm -f cscope.out cscope.in.out cscope.po.out cscope.files
+make[2]: Leaving directory `/home/mike/rcm/deb-build/rcm-1.2.0'
+rm -f config.status config.cache config.log configure.lineno config.status.lineno
+rm -f Makefile
+make[1]: Leaving directory `/home/mike/rcm/deb-build/rcm-1.2.0'
+   dh_clean
+	rm -f debian/rcm.substvars
+	rm -f debian/rcm.*.debhelper
+	rm -rf debian/rcm/
+	rm -f debian/*.debhelper.log
+	rm -f debian/files
+	find .  \( \( -type f -a \
+	        \( -name '#*#' -o -name '.*~' -o -name '*~' -o -name DEADJOE \
+		 -o -name '*.orig' -o -name '*.rej' -o -name '*.bak' \
+		 -o -name '.*.orig' -o -name .*.rej -o -name '.SUMS' \
+		 -o -name TAGS -o \( -path '*/.deps/*' -a -name '*.P' \) \
+		\) -exec rm -f {} + \) -o \
+		\( -type d -a -name autom4te.cache -prune -exec rm -rf {} + \) \)
+	rm -f *-stamp
+ dpkg-source -b rcm-1.2.0
+dpkg-source: info: using source format `3.0 (quilt)'
+dpkg-source: info: building rcm using existing ./rcm_1.2.0.orig.tar.gz
+dpkg-source: warning: ignoring deletion of file share/rcm.sh
+dpkg-source: warning: executable mode 0775 of 'autogen.sh' will not be represented in diff
+dpkg-source: info: local changes detected, the modified files are:
+ rcm-1.2.0/DEVELOPERS.md
+ rcm-1.2.0/arch/PKGBUILD.in
+ rcm-1.2.0/autogen.sh
+ rcm-1.2.0/homebrew/rcm.rb.in
+dpkg-source: error: aborting due to unexpected upstream changes, see /tmp/rcm_1.2.0-1.diff.5teBGL
+dpkg-source: info: you can integrate the local changes with dpkg-source --commit
+dpkg-buildpackage: error: dpkg-source -b rcm-1.2.0 gave error exit status 2
