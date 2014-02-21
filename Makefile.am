@@ -83,12 +83,14 @@ release_build_deb: NEWS.md DIST_SHA distcheck
 		mkdir -p deb-build && \
 		cp $(DIST_ARCHIVES) deb-build/$(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
 		tar -C deb-build -xf deb-build/$(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
+		cp -R debian deb-build/$(PACKAGE)-$(PACKAGE_VERSION) && \
 		cd deb-build/$(PACKAGE)-$(PACKAGE_VERSION) && \
 		debuild -us -uc && \
 		cd $(abs_srcdir) && \
 		git clone --branch gh-pages $(ORIGIN_URL) gh-pages && \
 		cp deb-build/$(PACKAGE)_$(PACKAGE_VERSION)*.deb gh-pages/debs && \
 		cd gh-pages && \
+		git add debs/$(PACKAGE)_$(PACKAGE_VERSION)*deb && \
 		git commit -m "Release version $(PACKAGE_VERSION) for Debian" -- debs/$(PACKAGE)_$(PACKAGE_VERSION)*deb
 
 release_push_deb:
