@@ -1,4 +1,4 @@
-rcm (@PACKAGE_VERSION@-1) unstable; urgency=low
+rcm (@PACKAGE_VERSION@) unstable; urgency=low
 
   * Transfer ownership to thoughtbot.
   * BUGFIX: Run hooks by default. Thanks to Patrick Brisbin.

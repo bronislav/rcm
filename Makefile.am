@@ -81,6 +81,7 @@ release_clean_arch:
 
 ###### Deb
 release_build_deb: NEWS.md DIST_SHA distcheck
+	### The big idea: $(edit_package) a changelog.in before the debuild.
 	cp -f NEWS.md debian/changelog && \
 		mkdir -p deb-build && \
 		cp $(DIST_ARCHIVES) deb-build/$(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
