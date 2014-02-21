@@ -81,13 +81,13 @@ release_clean_arch:
 
 ###### Deb
 release_build_deb: NEWS.md DIST_SHA distcheck
-	### The big idea: $(edit_package) a changelog.in before the debuild.
-	cp -f NEWS.md debian/changelog && \
-		mkdir -p deb-build && \
+	mkdir -p deb-build && \
 		cp $(DIST_ARCHIVES) deb-build/$(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
 		tar -C deb-build -xf deb-build/$(PACKAGE)_$(PACKAGE_VERSION).orig.tar.gz && \
 		cp -R debian deb-build/$(PACKAGE)-$(PACKAGE_VERSION) && \
 		cd deb-build/$(PACKAGE)-$(PACKAGE_VERSION) && \
+		dch -d "New upstream release" && dch -r "" && \
+		cp debian/changelog $(abs_srcdir)/debian/changelog && \
 		debuild -us -uc && \
 		cd $(abs_srcdir) && \
 		([ -d gh-pages ] || git clone --branch gh-pages $(ORIGIN_URL) gh-pages) && \

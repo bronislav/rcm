@@ -19,7 +19,6 @@ debian/rcm
 debian/rcm.debhelper.log
 share/rcm.sh
 *deb
-debian/changelog
 NEWS.md
 rcm-*.tar.gz
 
