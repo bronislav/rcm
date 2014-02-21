@@ -27,3 +27,4 @@ rcm-*.tar.gz
 gh-pages
 homebrew-formulae
 release-arch
+deb-build

@@ -12,6 +12,7 @@ EXTRA_DIST = LICENSE README.md
 	release_push_gh-pages release_clean_gh-pages
 
 ORIGIN_URL=$(shell git config --get remote.origin.url)
+CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 
 edit_package = sed \
 	-e 's|@PACKAGE[@]|$(PACKAGE)|g' \
@@ -64,7 +65,7 @@ release_clean_homebrew:
 
 ###### Arch
 release_build_arch: DIST_SHA
-	git clone --branch master $(ORIGIN_URL) release-arch
+	git clone --branch $(CURRENT_BRANCH) $(ORIGIN_URL) release-arch
 	cd release-arch &&\
 		$(edit_package) arch/PKGBUILD.in > arch/PKGBUILD &&\
 		git commit -m "Release version $(PACKAGE_VERSION) for Arch" -- arch/PKGBUILD
