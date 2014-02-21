@@ -33,7 +33,7 @@ release_clean: release_clean_tarball release_clean_homebrew release_clean_arch \
 
 ###### Tarball
 release_build_tarball: Makefile distcheck
-	git clone --branch gh-pages $(ORIGIN_URL) gh-pages && \
+	([ -d gh-pages ] || git clone --branch gh-pages . gh-pages) && \
 		mkdir gh-pages/dist && \
 		cp $(DIST_ARCHIVES) gh-pages/dist && \
 		cd gh-pages &&\
@@ -50,9 +50,9 @@ release_clean_tarball:
 
 ###### Homebrew
 release_build_homebrew: DIST_SHA
-	git clone git@github.com:thoughtbot/homebrew-formulae.git homebrew-formulae
-	$(edit_package) homebrew/$(PACKAGE).rb.in > homebrew-formulae/Formula/$(PACKAGE).rb
-	cd homebrew-formulae &&\
+	([ -d homebrew-formulae] || git clone git@github.com:thoughtbot/homebrew-formulae.git homebrew-formulae) && \
+		$(edit_package) homebrew/$(PACKAGE).rb.in > homebrew-formulae/Formula/$(PACKAGE).rb && \
+		cd homebrew-formulae &&\
 		git commit -am "$(PACKAGE): Release version $(PACKAGE_VERSION)"
 
 release_push_homebrew:
@@ -65,9 +65,10 @@ release_clean_homebrew:
 
 ###### Arch
 release_build_arch: DIST_SHA
-	git clone --branch $(CURRENT_BRANCH) $(ORIGIN_URL) release-arch
-	cd release-arch &&\
+	([ -d release-arch ] || git clone --branch $(CURRENT_BRANCH) . release-arch) && \
+		cd release-arch &&\
 		$(edit_package) arch/PKGBUILD.in > arch/PKGBUILD &&\
+		git add arch/PKGBUILD && \
 		git commit -m "Release version $(PACKAGE_VERSION) for Arch" -- arch/PKGBUILD
 
 release_push_arch:
@@ -88,7 +89,7 @@ release_build_deb: NEWS.md DIST_SHA distcheck
 		cd deb-build/$(PACKAGE)-$(PACKAGE_VERSION) && \
 		debuild -us -uc && \
 		cd $(abs_srcdir) && \
-		git clone --branch gh-pages $(ORIGIN_URL) gh-pages && \
+		([ -d gh-pages ] || git clone --branch gh-pages $(ORIGIN_URL) gh-pages) && \
 		cp deb-build/$(PACKAGE)_$(PACKAGE_VERSION)*.deb gh-pages/debs && \
 		cd gh-pages && \
 		git add debs/$(PACKAGE)_$(PACKAGE_VERSION)*deb && \
@@ -115,7 +116,7 @@ release_clean_tag:
 ###### Web page
 ### TODO: use the man/Makefile.am
 release_build_gh-pages:
-	git clone --branch gh-pages --single-branch . gh-pages && \
+	([ -d gh-pages ] || git clone --branch gh-pages --single-branch . gh-pages) && \
 	for i in lsrc.1 mkrc.1 rcm.7 rcrc.5 rcup.1 rcdn.1; do \
 	  mandoc -Thtml -Oman=%N.%S.html man/$$i > gh-pages/$$i.html ; \
 	done && \
